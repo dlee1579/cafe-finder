@@ -1,1 +1,1 @@
-web: gunicorn cafe-finder.wsgi
+web: gunicorn backend.wsgi

@@ -14,6 +14,7 @@ class Cafe(models.Model):
     is_pet_friendly = models.BooleanField(blank=True, null=True)
     # thumbnail_url = models.URLField(max_length=200, blank=True, null=True)
     thumbnail_image_location = models.TextField(max_length=200, blank=True, null=True)
+    google_maps_url = models.URLField(max_length=200, null=True, blank=True)
     
     def __str__(self) -> str:
         return self.name

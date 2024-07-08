@@ -24,7 +24,8 @@ class CafeSerializer(serializers.ModelSerializer):
             'has_wall_outlets',
             'is_pet_friendly',
             'thumbnail_image_location',
-            'ratings'
+            'google_maps_url',
+            'ratings',
         ]
     def get_address1(self, obj):
         return obj.address1.formatted

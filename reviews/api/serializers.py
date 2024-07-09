@@ -27,6 +27,8 @@ class ReviewSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'id',
             'author_id',
+            'title',
+            'description',
             'created_at',
             'updated_at',
         ]

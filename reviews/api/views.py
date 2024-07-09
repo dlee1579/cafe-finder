@@ -36,8 +36,11 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         data = request.data
         context = self.get_serializer_context()
-        context.update({"method": "POST"})
-        serializer = self.serializer_class(data=data, context=context,)
+        context.update({
+            "method": "POST",
+            "user": request.user,
+        })
+        serializer = self.serializer_class(data=data, context=context)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)

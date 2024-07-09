@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from reviews.constants import rating_fields
 
 class ReviewSerializer(serializers.ModelSerializer):
-    author_id = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all(), many=False, source='author')
+    author_id = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all(), many=False, source='author', required=False)
     cafe_id = serializers.PrimaryKeyRelatedField(queryset=Cafe.objects.all(), many=False, source='cafe')
     
     class Meta:
@@ -26,6 +26,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             'id',
+            'author_id',
             'created_at',
             'updated_at',
         ]
@@ -56,12 +57,13 @@ class ReviewSerializer(serializers.ModelSerializer):
         return cleanliness
     
     def create(self, validated_data,):
-        author = validated_data.get("author")
+        # author = validated_data.get("author")
         cafe = validated_data.get('cafe')
         
         method = self.context.get('method')
+        user = self.context.get('user')
         if method == "POST":
-            if Review.objects.filter(author=author, cafe=cafe).exists():
+            if Review.objects.filter(author=user, cafe=cafe).exists():
                 raise serializers.ValidationError("Review for this cafe from this user already exists.")
             return Review.objects.create(**validated_data)
         elif method == "PUT":

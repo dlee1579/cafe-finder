@@ -1,7 +1,8 @@
 from django.http import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from cafe.models import Cafe
 from reviews.api.serializers import ReviewSerializer
 from reviews.models import Review
@@ -9,13 +10,13 @@ from reviews.models import Review
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [TokenAuthentication]
     
     def get_queryset(self):
         query_fields = ['cafe_id', 'author_id']
         
         cafe_id = self.request.query_params.get('cafe_id')
         author_id = self.request.query_params.get('author_id')
-        
         
         kwargs = {}
         for query_field in query_fields:

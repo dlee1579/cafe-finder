@@ -27,8 +27,6 @@ class ReviewSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'id',
             'author_id',
-            'title',
-            'description',
             'created_at',
             'updated_at',
         ]
@@ -67,7 +65,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         if method == "POST":
             if Review.objects.filter(author=user, cafe=cafe).exists():
                 raise serializers.ValidationError("Review for this cafe from this user already exists.")
-            return Review.objects.create(**validated_data)
+            return Review.objects.create(**validated_data, author=user)
         elif method == "PUT":
             review = Review.objects.get(id=self.context.get('id'))
             if not review:

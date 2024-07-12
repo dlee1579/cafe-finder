@@ -34,4 +34,6 @@ class Review(models.Model):
     description = models.TextField(max_length=250, blank=True)
     
     def __str__(self) -> str:
+        if not self.author:
+            return "anonymous - {}: {}".format(self.cafe.name, self.title)
         return "{} - {}: {}".format(self.author.username, self.cafe.name, self.title)

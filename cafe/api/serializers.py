@@ -9,6 +9,7 @@ class CafeSerializer(serializers.ModelSerializer):
     address1 = serializers.SerializerMethodField()
     address2 = serializers.SerializerMethodField()
     ratings = serializers.SerializerMethodField()
+    thumbnail_image_url = serializers.SerializerMethodField()
     
     class Meta:
         model = Cafe
@@ -23,9 +24,9 @@ class CafeSerializer(serializers.ModelSerializer):
             'neighborhood',
             'has_wall_outlets',
             'is_pet_friendly',
-            'thumbnail_image_location',
             'google_maps_url',
             'ratings',
+            'thumbnail_image_url',
         ]
     def get_address1(self, obj):
         return obj.address1.formatted
@@ -42,6 +43,9 @@ class CafeSerializer(serializers.ModelSerializer):
             cleanliness=Avg("cleanliness"),
         )
         return ratings
+
+    def get_thumbnail_image_url(self, obj):
+        return obj.thumbnail_image.url
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
